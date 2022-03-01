@@ -1,0 +1,54 @@
+---
+title: "EDA_diabetes"
+output: html_document
+---
+
+```{r get data}
+library(readr)
+diabetes_012_health_indicators_BRFSS2015 <-    read_csv("~/Downloads/archive/diabetes_012_health_indicators_BRFSS2015.csv")
+
+#change name of dataset
+
+db <- diabetes_012_health_indicators_BRFSS2015
+
+library(tidyverse)
+
+#summarize data
+
+glimpse(db)
+
+#plot the distribution of BMI scores
+
+db %>% 
+       ggplot(aes(x = BMI)) + geom_histogram(fill = "steel blue") +theme_linedraw()
+
+#facet by sex
+db %>% 
+ggplot(aes(x = BMI)) + geom_histogram(fill = "steel blue") +theme_linedraw()+ facet_wrap(~Sex)
+
+db <- db %>% 
+  select(Diabetes_012, HighBP, HighChol, BMI, Smoker, Sex, HeartDiseaseorAttack)
+
+db %>% 
+           ggplot(aes(x = HeartDiseaseorAttack)) + geom_bar () + facet_grid(Diabetes_012 ~ Smoker, scales = "free")
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
