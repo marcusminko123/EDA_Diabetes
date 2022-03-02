@@ -26,11 +26,16 @@ db %>%
 db %>% 
 ggplot(aes(x = BMI)) + geom_histogram(fill = "steel blue") +theme_linedraw()+ facet_wrap(~Sex)
 
-db <- db %>% 
-  select(Diabetes_012, HighBP, HighChol, BMI, Smoker, Sex, HeartDiseaseorAttack)
+#filter out the prediabetics, mutate, select
+db_new <- db %>% 
+                filter(Diabetes_012 != 1) %>% 
+                mutate(Diabetes = recode(Diabetes_012, "0" = "NO", "2" = "YES")) %>%                select(Diabetes, HighBP, HighChol, BMI, Smoker, Sex, HeartDiseaseorAttack) 
 
-db %>% 
-           ggplot(aes(x = HeartDiseaseorAttack)) + geom_bar () + facet_grid(Diabetes_012 ~ Smoker, scales = "free")
+
+#plot
+
+db_new %>% 
+           ggplot(aes(x = HeartDiseaseorAttack)) + geom_bar () + facet_grid(Diabetes ~ Smoker, scales = "free")
 ```
 
 ## R Markdown
