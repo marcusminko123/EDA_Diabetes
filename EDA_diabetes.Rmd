@@ -1,4 +1,6 @@
 ---
+name: "Marcus Minko"
+date: "3-15-2022"
 title: "EDA_diabetes"
 output: html_document
 ---
@@ -20,11 +22,11 @@ glimpse(db)
 #plot the distribution of BMI scores
 
 db %>% 
-       ggplot(aes(x = BMI)) + geom_histogram(fill = "steel blue") +theme_linedraw()
+       ggplot(aes(x = BMI)) + geom_histogram(fill = "steel blue") +theme_linedraw() + labs(title = "Distribution of BMI scores", y = "frequency", x = "BMI Scores")
 
 #facet by sex
 db %>% 
-ggplot(aes(x = BMI)) + geom_histogram(fill = "steel blue") + theme_linedraw()+ facet_wrap(~Sex)
+ggplot(aes(x = BMI)) + geom_histogram(fill = "steel blue") + theme_linedraw()+ facet_wrap(~Sex) + labs(title = "Distribution of BMI scores", subtitle = "0 = Men  1 = Women", y = "frequency", x = "BMI Scores")
 
 #filter out the prediabetics, mutate, select
 db_new <- db %>% 
@@ -45,5 +47,15 @@ db_new2 <- db_new1 %>%
 #plot
 
 db_new2 %>% 
-           ggplot(aes(x = Heart_Attack_Disease)) + geom_bar (fill = "steel blue") + facet_grid(Diabetes ~ Smoking, scales = "free") + theme_minimal()
+           ggplot(aes(x = Heart_Attack_Disease)) + geom_bar (fill = "steel blue") + facet_grid(Diabetes ~ Smoking, scales = "free") + theme_minimal() + labs(title = "Heart Problems by Diabetes & Smoking Status", y = "Frequency", x = "Heart Attack / Heart Disease")
+
+#You can see in this plot that smoking if you're diabetic puts you at the greatest risk of a heart attack or diagnosis of heart disease
+
+
+db_new2 %>% 
+          group_by(Diabetes, Smoking, Heart_Attack_Disease) %>% 
+          summarise(percent = 100 * n() / nrow(db_new2))
+
+#Based on these data, the chance of Heart Attack/Disease for a Diabetic Non-smoker is 17.3% and for a Non-diabetic smoker it is 10.3%. For a diabetic smoker the chance of heart attack/disease is 26.9%. For Non-diabetic non-smokers it is the lowest at 4.8%
+
 ```
